@@ -9,6 +9,7 @@ import (
 	"os"               // Used to read environment variables (like PORT).
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -37,6 +38,13 @@ func main() {
 	// app (instance) can access all methods of fiber.App.
 	// This works just like in Express.js where app is an instance of Express.
 	app := fiber.New()
+
+	// Enable CORS
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173", // Allow frontend origin
+		AllowMethods: "GET,POST,PATCH,DELETE",
+		AllowHeaders: "Content-Type",
+	}))
 
 	// Register API routes
 	routes.MongoDbRoutes(app)   // MongoDB-based routes =>  Registers API routes that interact with MongoDB.
